@@ -57,7 +57,7 @@ export const Register = props => {
                             placeholder="Password" required />
                     </div>
                     <div>
-                        <input ref={verifyPassword} type="verifyPassword" name="verifyPassword" className="form-control"
+                        <input ref={verifyPassword} type="password" name="verifyPassword" className="form-control"
                             placeholder="Verify Password" required />
                     </div>
                     <div>
