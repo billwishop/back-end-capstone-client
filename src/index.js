@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    {console.log('YES')}
+    {console.log('you rock')}
     <Router>
       <CrossCheck />
     </Router>
