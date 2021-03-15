@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter as Router} from 'react-router-dom'
+import {CrossCheck} from './components/CrossCheck.js'
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    {console.log('YES')}
+    <Router>
+      <CrossCheck />
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
