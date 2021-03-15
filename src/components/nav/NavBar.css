@@ -1,0 +1,19 @@
+.navbar {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: left;
+}
+
+.navbar--item {
+    flex-basis: 20%;
+    list-style-type: none;
+    font-size: medium;
+}
+
+.fakeLink {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    text-decoration: underline;
+    cursor: pointer;
+}
