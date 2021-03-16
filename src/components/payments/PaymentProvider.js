@@ -7,6 +7,7 @@ export const PaymentProvider = props => {
     const [payments, setPayments] = useState([])
     const [singlePayment, setSinglePayment] = useState([])
     const [paymentTypes, setPaymentTypes] = useState([])
+    const [tableTenants, setTableTenants] = useState([])
     
     const getPayments = () => {
         return fetch("http://localhost:8000/payments", {
@@ -24,6 +25,7 @@ export const PaymentProvider = props => {
                 "Authorization": `Token ${localStorage.getItem("cc_token")}`
             }
         })
+        // .then(r => r.json())
         .then(r => r.json())
         .then(setPayments)
     }
@@ -80,14 +82,30 @@ export const PaymentProvider = props => {
             }
         })
         .then(r => r.json())
-        .then(setPaymentTypes)
+        .then((r) => {
+            const res = JSON.parse(r)
+            setPaymentTypes(res)})
+    }
+
+    const getTableTenants = () => {
+        return fetch("http://localhost:8000/tenants?table=true", {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("cc_token")}`
+            }
+        })
+        .then(r => r.json())
+        .then((r) => {
+            const res = JSON.parse(r)
+            setTableTenants(res)})
+        // .then(r => r.json())
+        // .then(setTableTenants)
     }
 
     return (
         <PaymentContext.Provider value={{payments, setPayments, singlePayment, setSinglePayment,
                                             getPayments, searchPayments, getSinglePayment, 
                                             postPayment, updatePayment, deletePayment,
-                                            paymentTypes, getPaymentTypes}}>
+                                            paymentTypes, getPaymentTypes, getTableTenants, tableTenants}}>
             {props.children}
         </PaymentContext.Provider>
     )
