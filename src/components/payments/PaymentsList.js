@@ -17,36 +17,59 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import { CakeSharp } from '@material-ui/icons';
 
 export const PaymentList = () => {
     const history = useHistory()
-    const [pt_object, setPT] = useState({})
+    const [data, setData] = useState([])
+    const [columns, setColumns] = useState([])
     const {payments, paymentTypes, getPaymentTypes, singlePayment, getPayments, searchPayments, getSinglePayment, 
-        postPayment, updatePayment, deletePayment} = useContext(PaymentContext)
+        postPayment, updatePayment, deletePayment, getTableTenants, tableTenants} = useContext(PaymentContext)
     
+    // Fetches and sets payments, associated tenants 
+    // and payment types on initial render
     useEffect(() => {
         getPayments()
         .then(getPaymentTypes)
+        .then(getTableTenants)
     }, [])
 
-    console.log(paymentTypes)
 
-    const pt__ = paymentTypes.map(pt => 
-            Object.assign({}, pt.id = pt.label)
-            )
+    useEffect(() => {
+        setData(payments.map(p => (
+            {
+                date: p.date,
+                full_name: p.tenant.full_name,
+                amount: '$'+p.amount,
+                ref_num: p.ref_num,
+                type: p.payment_type.id,
+                tenant_id: p.tenant.id
+            }
+            )))
+    }, [payments])
+    
 
-    // const pt_obj = Object.assign({}, pt)
-    console.log(pt__)
+    // sets the state for columns which gives instructions 
+    // to the table for headers, fields and dropdowns 
+    useEffect(() => {
+        const newColumns = [
+            {title: 'Date', field: 'date', type: "date"},
+            {title: 'Name', field: 'full_name', lookup: tableTenants, 
+                render: rowData => (
+                    <Link to={`/tenants/${rowData.tenant_id}`}>{rowData.full_name}</Link>
+                )},
+            {title: 'Payment', field: 'amount'},
+            {title: 'Ref #', field: 'ref_num'},
+            {title: 'Type', field: 'type', lookup: paymentTypes,},
+            // add the tenant id to the columns so it's accessible when 
+            // creating the tenant link but keep the column hidden
+            {title: 'Tenant_Id', field: 'tenant_id', hidden: true}
+        ]
+        setColumns(newColumns)
+    }, [paymentTypes])
 
 
-    const columns = [
-        {title: 'Date', field: 'date'},
-        {title: 'Name', field: 'full_name'},
-        {title: 'Payment', field: 'amount'},
-        {title: 'Ref #', field: 'ref_num'},
-        {title: 'Type', field: 'type', lookup:pt_object}
-    ]
-
+    // icons for the table
     const tableIcons = {
         Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
         Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
@@ -67,16 +90,6 @@ export const PaymentList = () => {
         ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
     };
 
-    const data = payments.map(p => (
-        {
-            date: p.date,
-            full_name: <Link to={`/tenants/${p.tenant.id}`}>{p.tenant.full_name}</Link>,
-            amount: '$'+p.amount,
-            ref_num: p.ref_num,
-            type: p.payment_type.label
-        }
-        ))
-
 
     return (
         <div className="payment--list">
@@ -84,6 +97,12 @@ export const PaymentList = () => {
                 columns={columns}
                 data={data}
                 icons={tableIcons}
+                options={{
+                    paging: true,
+                    pageSize: 20,
+                    emptyRowsWhenPaging: false,
+                    pageSizeOptions: [5,10,20,50]
+                }}
                 editable={{
                     onRowAdd: payment => 
 
