@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState, forwardRef} from 'react'
 import {PaymentContext} from './PaymentProvider.js'
 import MaterialTable from "material-table"
-import { Link, useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';
@@ -29,9 +29,9 @@ export const PaymentList = () => {
     // Fetches and sets payments, associated tenants 
     // and payment types on initial render
     useEffect(() => {
-        getPayments()
+        getTableTenants()
         .then(getPaymentTypes)
-        .then(getTableTenants)
+        .then(getPayments)
     }, [])
 
 
@@ -39,7 +39,7 @@ export const PaymentList = () => {
         setData(payments.map(p => (
             {
                 date: p.date,
-                full_name: p.tenant.full_name,
+                full_name: p.tenant.id,
                 amount: '$'+p.amount,
                 ref_num: p.ref_num,
                 type: p.payment_type.id,
@@ -54,10 +54,11 @@ export const PaymentList = () => {
     useEffect(() => {
         const newColumns = [
             {title: 'Date', field: 'date', type: "date"},
-            {title: 'Name', field: 'full_name', lookup: tableTenants, 
-                render: rowData => (
-                    <Link to={`/tenants/${rowData.tenant_id}`}>{rowData.full_name}</Link>
-                )},
+            {title: 'Name', field: 'full_name', lookup: tableTenants,
+                cellStyle: {
+                    color: '#0000EE'
+                }
+            },
             {title: 'Payment', field: 'amount'},
             {title: 'Ref #', field: 'ref_num'},
             {title: 'Type', field: 'type', lookup: paymentTypes,},
@@ -90,7 +91,6 @@ export const PaymentList = () => {
         ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />)
     };
 
-
     return (
         <div className="payment--list">
             <MaterialTable title="Payments" 
@@ -102,6 +102,10 @@ export const PaymentList = () => {
                     pageSize: 20,
                     emptyRowsWhenPaging: false,
                     pageSizeOptions: [5,10,20,50]
+                }}
+                onRowClick={(e, rowData) => {
+                    history.push(`/tenants/${rowData.tenant_id}`)
+                    console.log(e.target.getAttribute('id'))
                 }}
                 editable={{
                     onRowAdd: payment => 
