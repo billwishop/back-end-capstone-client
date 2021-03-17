@@ -62,9 +62,20 @@ export const TenantProvider = props => {
         .then(getTenants)
     }
 
+    const searchTenants = searchTerm => {
+        return fetch(`http://localhost:8000/tenants?search=${searchTerm}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("cc_token")}`
+            }
+        })
+        .then(r => r.json())
+        .then(setTenants)
+    }
+
     return (
         <TenantContext.Provider value={{tenants, singleTenant, getTenants, getSingleTenant,
-                                        updateTenant, deleteTenant, postTenant}}>
+                                        updateTenant, deleteTenant, postTenant, searchTenants}}>
             {props.children}
         </TenantContext.Provider>
     )
