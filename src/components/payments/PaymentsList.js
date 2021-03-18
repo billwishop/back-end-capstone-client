@@ -110,10 +110,11 @@ export const PaymentList = () => {
                 editable={{
                     onRowAdd: payment => 
 
-                        console.log(payment)
-
+                    postPayment(payment)
+                    // console.log(payment)
                     
                 }}
+                addRowPosition={1}
                 />
         </div>
     )
