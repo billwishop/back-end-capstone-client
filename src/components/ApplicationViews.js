@@ -7,6 +7,7 @@ import { PropertyProvider } from './properties/PropertyProvider'
 import { TenantList } from './tenants/TenantList'
 import { TenantProvider } from './tenants/TenantProvider'
 import { TenantForm } from './tenants/TenantForm'
+import { PropertyForm } from './properties/PropertyForm'
 
 export const ApplicationViews = () => {
     return (
@@ -31,7 +32,13 @@ export const ApplicationViews = () => {
                 } />
             </TenantProvider>
             <PropertyProvider>
-                <Route exact path="/properties" render={
+                <Route exact path="/properties/create" render={
+                    props => <PropertyForm {...props} />
+                } />
+                <Route exact path="/properties/edit/:property_id(\d+)" render={
+                    props => <PropertyForm {...props} />
+                } />
+                <Route path="/properties" render={
                     props => <PropertyList {...props} />
                 } />
             </PropertyProvider>
