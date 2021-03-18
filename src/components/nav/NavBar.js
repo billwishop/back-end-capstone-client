@@ -23,7 +23,7 @@ export const NavBar = props => {
                 </Link>
             </li>
             <li className="navbar--item">
-                <FontAwesomeIcon icon={faSignOutAlt} 
+                <FontAwesomeIcon className='icon' icon={faSignOutAlt} 
                     onClick={() => {
                         localStorage.removeItem("cc_token")
                         props.history.push({ pathname: "/" })

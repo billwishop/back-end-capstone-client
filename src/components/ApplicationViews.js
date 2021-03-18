@@ -6,6 +6,7 @@ import { PropertyList } from './properties/PropertyList'
 import { PropertyProvider } from './properties/PropertyProvider'
 import { TenantList } from './tenants/TenantList'
 import { TenantProvider } from './tenants/TenantProvider'
+import { TenantForm } from './tenants/TenantForm'
 
 export const ApplicationViews = () => {
     return (
@@ -19,7 +20,13 @@ export const ApplicationViews = () => {
                 </Route> */}
             </PaymentProvider>
             <TenantProvider>
-                <Route exact path="/tenants" render={
+                <Route exact path="/tenants/create" render={
+                    props => <TenantForm {...props} />
+                } />
+                <Route exact path="/tenants/edit/:tenant_id(\d+)" render={
+                    props => <TenantForm {...props} />
+                } />
+                <Route path="/tenants" render={
                     props => <TenantList {...props} />
                 } />
             </TenantProvider>
