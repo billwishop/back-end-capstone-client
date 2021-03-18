@@ -63,7 +63,7 @@ export const PropertyProvider = props => {
     }
 
     return (
-        <PropertyContext.Provider value={{properties, singleProperty, getProperties, getSingleProperty,
+        <PropertyContext.Provider value={{properties, setSingleProperty, singleProperty, getProperties, getSingleProperty,
                                             updateProperty, deleteProperty, postProperty}}>
             {props.children}
         </PropertyContext.Provider>
