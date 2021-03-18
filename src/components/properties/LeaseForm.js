@@ -41,7 +41,6 @@ export const LeaseForm = props => {
                 rent: rent.current.value
             })
     }
-    console.log(tenants)
 
     return (
         <form className='Lease--form'>
