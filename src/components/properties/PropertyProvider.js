@@ -62,9 +62,33 @@ export const PropertyProvider = props => {
         .then(getProperties)
     }
 
+    const postLease = (propertyId, lease) => {
+        return fetch(`http://localhost:8000/properties/${propertyId}/lease`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("cc_token")}`
+            },
+            body: JSON.stringify(lease)
+        })
+        .then(()=> getSingleProperty(propertyId))
+    }
+    const deleteLease = (propertyId, leaseId) => {
+        return fetch(`http://localhost:8000/properties/${propertyId}/lease`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("cc_token")}`
+            },
+            body: JSON.stringify({lease_id: leaseId})
+        })
+        .then(()=> getSingleProperty(propertyId))
+    }
+
     return (
         <PropertyContext.Provider value={{properties, setSingleProperty, singleProperty, getProperties, getSingleProperty,
-                                            updateProperty, deleteProperty, postProperty}}>
+                                            updateProperty, deleteProperty, postProperty,
+                                            postLease, deleteLease}}>
             {props.children}
         </PropertyContext.Provider>
     )

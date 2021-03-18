@@ -16,6 +16,11 @@ code {
   color: #707070
 }
 
+.addIcon:hover, 
+.deleteIcon:hover {
+  cursor: pointer;
+}
+
 /* div {
   animation-duration: 3s;
   animation-name: slidein;
