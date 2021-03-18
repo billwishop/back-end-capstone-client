@@ -8,6 +8,8 @@ import { TenantList } from './tenants/TenantList'
 import { TenantProvider } from './tenants/TenantProvider'
 import { TenantForm } from './tenants/TenantForm'
 import { PropertyForm } from './properties/PropertyForm'
+import { PropertyDetails } from './properties/PropertyDetails'
+import { LeaseForm } from './properties/LeaseForm'
 
 export const ApplicationViews = () => {
     return (
@@ -38,8 +40,22 @@ export const ApplicationViews = () => {
                 <Route exact path="/properties/edit/:property_id(\d+)" render={
                     props => <PropertyForm {...props} />
                 } />
-                <Route path="/properties" render={
+                <Route exact path="/properties" render={
                     props => <PropertyList {...props} />
+                } />
+                <Route path="/properties/create" render={
+                    props => <PropertyList {...props} />
+                } />
+                <Route path="/properties/edit" render={
+                    props => <PropertyList {...props} />
+                } />
+            <TenantProvider>
+                <Route path="/properties/:property_id(\d+)/lease" render={
+                    props => <LeaseForm {...props} />
+                } />                
+            </TenantProvider>
+                <Route path="/properties/:property_id(\d+)" render={
+                    props => <PropertyDetails {...props} />
                 } />
             </PropertyProvider>
         </>
