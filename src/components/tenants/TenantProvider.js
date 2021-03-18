@@ -74,7 +74,7 @@ export const TenantProvider = props => {
     }
 
     return (
-        <TenantContext.Provider value={{tenants, singleTenant, getTenants, getSingleTenant,
+        <TenantContext.Provider value={{tenants, singleTenant, setSingleTenant, getTenants, getSingleTenant,
                                         updateTenant, deleteTenant, postTenant, searchTenants}}>
             {props.children}
         </TenantContext.Provider>

@@ -1,8 +1,8 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useContext, useState, useEffect, useRef} from 'react'
 import {TenantContext} from './TenantProvider'
 
 export const TenantForm = props => {
-    const {singleTenant, getSingleTenant, updateTenant, postTenant} = useContext(TenantContext)
+    const {singleTenant, getSingleTenant, setSingleTenant, updateTenant, postTenant} = useContext(TenantContext)
 
     // for edit mode - a new tenant will be constructed 
     // and set before being passed into updateTenant()
@@ -12,13 +12,18 @@ export const TenantForm = props => {
         full_name:""
     })
 
+    const full_name = useRef()
+    const phone_number = useRef()
+    const email = useRef()
+
     const editMode = props.match.params.hasOwnProperty("tenant_id")
 
     useEffect(() => {
         if (editMode){
-            getSingleTenant(parseInt(props.match.params.hasOwnProperty("tenant_id")))
+            getSingleTenant(parseInt(props.match.params.tenant_id))
         }
     }, [])
+
 
     const handleControlledInputChange = (event) => {
         const newTenant = Object.assign({}, tenant)          // Create copy
@@ -30,11 +35,11 @@ export const TenantForm = props => {
         if (editMode) {
             // PUT
             updateTenant({
-                id: tenant.id,
-                phone_number: tenant.phone_number,
-                email: tenant.email,
-                full_name: tenant.full_name
-            })
+                id: singleTenant.id,
+                phone_number: phone_number.current.value,
+                email: email.current.value,
+                full_name: full_name.current.value
+            }) .then(setSingleTenant({}))
         } else {
             // POST
             postTenant({
@@ -50,21 +55,21 @@ export const TenantForm = props => {
             <h2>{editMode ? "Update Tenant" : "Add Tenant"}</h2>
             <div>
                 <input type="text" name="full_name" required autoFocus className="form-control"
-                            placeholder="Tenant name"
+                            placeholder="Tenant name" ref={full_name}
                             defaultValue={editMode ?singleTenant.full_name :tenant.full_name}
                             onChange={handleControlledInputChange}
                             />
             </div>
             <div>
             <input type="text" name="phone_number" required autoFocus className="form-control"
-                        placeholder="Phone number"
+                        placeholder="Phone number" ref={phone_number}
                         defaultValue={editMode ?singleTenant.phone_number :tenant.phone_number}
                         onChange={handleControlledInputChange}
                     />
             </div>
             <div>
             <input type="text" name="email" required autoFocus className="form-control"
-                        placeholder="Email"
+                        placeholder="Email" ref={email}
                         defaultValue={editMode ?singleTenant.email :tenant.email}
                         onChange={handleControlledInputChange}
                     />
@@ -72,6 +77,7 @@ export const TenantForm = props => {
             <button type="cancel"
                 onClick={evt => {
                     props.history.push("/tenants")
+                    setSingleTenant({})
                 }}
                 className="btn btn-primary">
                 Cancel
