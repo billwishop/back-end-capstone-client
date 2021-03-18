@@ -7,13 +7,11 @@ import './tenant.css'
 import { Add } from '@material-ui/icons';
 
 export const TenantList = props => {
-    const {tenants, getTenants, postTenant, searchTenants} = useContext(TenantContext)
+    const {tenants, getTenants, searchTenants} = useContext(TenantContext)
 
     useEffect(() => {
         getTenants()
     }, [])
-
-    console.log(props.match.path)
 
     return (
         <div className="tenant--list">

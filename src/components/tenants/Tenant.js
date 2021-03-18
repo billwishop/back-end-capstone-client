@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import React, { useEffect, useState, useContext } from "react"
+import { Link, useHistory } from "react-router-dom"
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import {TenantContext} from './TenantProvider'
 
 export const Tenant = ({ tenant }) => {
+    const {getSingleTenant, deleteTenant} = useContext(TenantContext)
+
     // state variable to hold active lease to display current address
     const [home, setHome] = useState(null)
-    
+
+    const history = useHistory()
     
     useEffect(() => {
         // determines if the tenant has an associated property
@@ -35,6 +41,15 @@ export const Tenant = ({ tenant }) => {
                     { home.rented_property.street }
                 </Link>
             </div>}
+            <EditIcon className="editIcon icon" 
+                onClick={()=> {
+                    getSingleTenant(tenant.id)
+                    .then(history.push(`/tenants/edit/${tenant.id}`))
+                }} />
+            <DeleteIcon className="deleteIcon icon" 
+                onClick={()=> {
+                    deleteTenant(tenant.id)
+                }} />
         </section>
         )
 }
