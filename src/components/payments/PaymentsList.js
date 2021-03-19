@@ -43,7 +43,8 @@ export const PaymentList = () => {
                 amount: '$'+p.amount,
                 ref_num: p.ref_num,
                 type: p.payment_type.id,
-                tenant_id: p.tenant.id
+                tenant_id: p.tenant.id,
+                payment_id: p.id
             }
             )))
     }, [payments])
@@ -64,20 +65,20 @@ export const PaymentList = () => {
             {title: 'Type', field: 'type', lookup: paymentTypes,},
             // add the tenant id to the columns so it's accessible when 
             // creating the tenant link but keep the column hidden
-            {title: 'Tenant_Id', field: 'tenant_id', hidden: true}
+            {title: 'Tenant_Id', field: 'tenant_id', hidden: true},
+            {title: 'Payment_Id', field: 'payment_id', hidden: true}
         ]
         setColumns(newColumns)
     }, [paymentTypes])
-
 
     // icons for the table
     const tableIcons = {
         Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
         Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
         Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-        Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+        Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} className='deleteIcon icon'/>),
         DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-        Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
+        Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} className='editIcon icon'/>),
         Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
         Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
         FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
@@ -105,16 +106,17 @@ export const PaymentList = () => {
                 }}
                 onRowClick={(e, rowData) => {
                     history.push(`/tenants/${rowData.tenant_id}`)
-                    console.log(e.target.getAttribute('id'))
                 }}
                 editable={{
                     onRowAdd: payment => 
-
-                    postPayment(payment)
-                    // console.log(payment)
-                    
+                    postPayment(payment),                  
+                
+                    onRowDelete: payment => 
+                    deletePayment(payment.payment_id),
+                
+                    onRowUpdate: payment => 
+                    updatePayment(payment)
                 }}
-                addRowPosition={1}
                 />
         </div>
     )
