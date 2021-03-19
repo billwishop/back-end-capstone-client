@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState, forwardRef} from 'react'
-import {PaymentContext} from './PaymentProvider.js'
+import {PaymentContext} from '../payments/PaymentProvider'
 import MaterialTable from "material-table"
 import { useHistory } from "react-router-dom"
 import AddBox from '@material-ui/icons/AddBox';
@@ -19,28 +19,34 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import { CakeSharp } from '@material-ui/icons';
 
-export const PaymentList = () => {
+export const TenantDetails = (props) => {
     const history = useHistory()
+    const [total, setTotal] = useState("")
     const [data, setData] = useState([])
     const [columns, setColumns] = useState([])
-    const [total, setTotal] = useState("")
-    const {payments, setPayments, paymentTypes, getPaymentTypes, singlePayment, getPayments, searchPayments, getSinglePayment, 
-        postPayment, updatePayment, deletePayment, getTableTenants, tableTenants} = useContext(PaymentContext)
+    const {paymentByTenant, payments, paymentTypes, getPaymentTypes, singlePayment, getPayments, searchPayments, getSinglePayment, 
+        postPayment, updatePayment, deletePayment, getTableTenants, tableTenants, getPaymentsByTenant, postPaymentTenantDetails} = useContext(PaymentContext)
     
-    // Fetches and sets payments, associated tenants 
+    // Fetches and sets paymentByTenant, associated tenants 
     // and payment types on initial render
     useEffect(() => {
         getTableTenants()
         .then(getPaymentTypes)
-        .then(getPayments)
+        .then(() => 
+            getPaymentsByTenant(parseInt(props.match.params.tenant_id))
+        ) 
     }, [])
+
+    useEffect(() => {
+        getPaymentsByTenant(parseInt(props.match.params.tenant_id))
+    }, [payments])
 
 
     useEffect(() => {
-        setData(payments.map(p => (
+        setData(paymentByTenant.map(p => (
             {
                 date: p.date,
-                full_name: p.tenant.id,
+                full_name: p.tenant.full_name,
                 amount: '$'+p.amount,
                 ref_num: p.ref_num,
                 type: p.payment_type.id,
@@ -48,31 +54,27 @@ export const PaymentList = () => {
                 payment_id: p.id
             }
             )))
-    }, [payments])
+    }, [paymentByTenant])
 
     // calculates the total payments rendered at a given time
     useEffect(() => {
         let sum = 0
-        for (const payment of payments){
+        for (const payment of paymentByTenant){
             sum += payment.amount
         }
         setTotal(sum)
-    }, [payments])
+    }, [paymentByTenant])
     
 
     // sets the state for columns which gives instructions 
     // to the table for headers, fields and dropdowns 
     useEffect(() => {
         const newColumns = [
-            {title: 'Date', field: 'date', type: "date", disableClick: true, searchable: false},
-            {title: 'Name', field: 'full_name', lookup: tableTenants,
-                cellStyle: {
-                    color: '#0000EE'
-                }
-            },
-            {title: 'Payment', field: 'amount', disableClick: true},
-            {title: 'Ref #', field: 'ref_num', disableClick: true},
-            {title: 'Type', field: 'type', lookup: paymentTypes, disableClick: true},
+            {title: 'Date', field: 'date', type: "date"},
+            {title: 'Name', field: 'full_name', editable: 'never'},
+            {title: 'Payment', field: 'amount'},
+            {title: 'Ref #', field: 'ref_num'},
+            {title: 'Type', field: 'type', lookup: paymentTypes,},
             // add the tenant id to the columns so it's accessible when 
             // creating the tenant link but keep the column hidden
             {title: 'Tenant_Id', field: 'tenant_id', hidden: true},
@@ -105,10 +107,10 @@ export const PaymentList = () => {
     return (
         <section className="payments">
             <aside className="payments--aside">
-            <div>Total: ${total}</div>
+                <div>Total: ${total}</div>
             </aside>
-            <div className="payment--list">
-                <MaterialTable title="Payments" 
+            <div className="payments--list">
+                <MaterialTable title={`Payments`}  // Add Tenant Name
                     columns={columns}
                     data={data}
                     icons={tableIcons}
@@ -117,24 +119,17 @@ export const PaymentList = () => {
                         pageSize: 20,
                         emptyRowsWhenPaging: false,
                         pageSizeOptions: [5,10,20,50],
-                        addRowPosition: 'first',
-                        // searchAutoFocus: true
-                    }}
-                    onRowClick={(e, rowData) => {
-                        history.push(`/tenants/${rowData.tenant_id}`)
+                        addRowPosition: 'first'
                     }}
                     editable={{
                         onRowAdd: payment => 
-                        postPayment(payment),                  
-                    
+                        postPaymentTenantDetails(payment, parseInt(props.match.params.tenant_id)),  
+
                         onRowDelete: payment => 
                         deletePayment(payment.payment_id),
-                    
+                        
                         onRowUpdate: payment => 
                         updatePayment(payment)
-                    }}
-                    onSearchChange={e => {
-                        searchPayments(e)
                     }}
                     />
             </div>

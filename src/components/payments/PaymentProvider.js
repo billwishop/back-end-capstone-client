@@ -8,6 +8,7 @@ export const PaymentProvider = props => {
     const [singlePayment, setSinglePayment] = useState([])
     const [paymentTypes, setPaymentTypes] = useState([])
     const [tableTenants, setTableTenants] = useState([])
+    const [paymentByTenant, setPaymentByTenant] = useState([])
     
     const getPayments = () => {
         return fetch("http://localhost:8000/payments", {
@@ -41,6 +42,19 @@ export const PaymentProvider = props => {
     } 
 
     const postPayment = payment => {
+        return fetch("http://localhost:8000/payments", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("cc_token")}`
+            },
+            body: JSON.stringify(payment)
+        })
+        .then(getPayments)
+    }
+
+    const postPaymentTenantDetails = (payment, tenantId ) => {
+        payment['tenant_id'] = tenantId
         return fetch("http://localhost:8000/payments", {
             method: "POST",
             headers: {
@@ -97,15 +111,25 @@ export const PaymentProvider = props => {
         .then((r) => {
             const res = JSON.parse(r)
             setTableTenants(res)})
-        // .then(r => r.json())
-        // .then(setTableTenants)
     }
 
+    const getPaymentsByTenant = id => {
+        return fetch(`http://localhost:8000/payments?tenant=${id}`, {
+            headers: {
+                "Authorization": `Token ${localStorage.getItem("cc_token")}`
+            }
+        })
+        .then(r => r.json())
+        .then(setPaymentByTenant)
+    }
+
+
     return (
-        <PaymentContext.Provider value={{payments, setPayments, singlePayment, setSinglePayment,
+        <PaymentContext.Provider value={{payments, paymentByTenant, singlePayment, setSinglePayment,
                                             getPayments, searchPayments, getSinglePayment, 
                                             postPayment, updatePayment, deletePayment,
-                                            paymentTypes, getPaymentTypes, getTableTenants, tableTenants}}>
+                                            paymentTypes, getPaymentTypes, getTableTenants, 
+                                            tableTenants, getPaymentsByTenant, postPaymentTenantDetails}}>
             {props.children}
         </PaymentContext.Provider>
     )
