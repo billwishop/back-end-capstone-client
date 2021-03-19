@@ -53,7 +53,7 @@ export const PaymentProvider = props => {
     }
 
     const updatePayment = payment => {
-        return fetch(`http://localhost:8000/payments/${payment.id}`, {
+        return fetch(`http://localhost:8000/payments/${payment.payment_id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
