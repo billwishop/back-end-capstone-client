@@ -1,5 +1,6 @@
 import React from 'react'
 import {useState} from 'react'
+import {formatDate} from '../utility/Date'
 
 export const PaymentContext = React.createContext()
 
@@ -123,13 +124,27 @@ export const PaymentProvider = props => {
         .then(setPaymentByTenant)
     }
 
+    const dateRangePayments = dateRange => {
+        const d1 = formatDate(dateRange.startDate)
+        const d2 = formatDate(dateRange.endDate)
+        return fetch(`http://localhost:8000/payments?date=${d1}/${d2}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("cc_token")}`
+            }
+        })
+        .then(r => r.json())
+        .then(setPayments)
+    }
+
 
     return (
         <PaymentContext.Provider value={{payments, paymentByTenant, singlePayment, setSinglePayment,
                                             getPayments, searchPayments, getSinglePayment, 
                                             postPayment, updatePayment, deletePayment,
                                             paymentTypes, getPaymentTypes, getTableTenants, 
-                                            tableTenants, getPaymentsByTenant, postPaymentTenantDetails}}>
+                                            tableTenants, getPaymentsByTenant, 
+                                            postPaymentTenantDetails, dateRangePayments}}>
             {props.children}
         </PaymentContext.Provider>
     )

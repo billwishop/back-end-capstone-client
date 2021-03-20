@@ -18,13 +18,24 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import { CakeSharp } from '@material-ui/icons';
+import { DateRangePicker } from 'react-date-range';
+import { DateRange } from 'react-date-range'
+import 'react-date-range/dist/styles.css'; 
+import 'react-date-range/dist/theme/default.css';
 
 export const PaymentList = () => {
     const history = useHistory()
     const [data, setData] = useState([])
     const [columns, setColumns] = useState([])
     const [total, setTotal] = useState("")
-    const {payments, setPayments, paymentTypes, getPaymentTypes, singlePayment, getPayments, searchPayments, getSinglePayment, 
+    const [dateRange, setDateRange] = useState([
+        {
+            startDate: new Date(),
+            endDate: null,
+            key: 'selection'
+        }
+    ]);
+    const {payments, dateRangePayments, paymentTypes, getPaymentTypes, singlePayment, getPayments, searchPayments, getSinglePayment, 
         postPayment, updatePayment, deletePayment, getTableTenants, tableTenants} = useContext(PaymentContext)
     
     // Fetches and sets payments, associated tenants 
@@ -106,6 +117,15 @@ export const PaymentList = () => {
         <section className="payments">
             <aside className="payments--aside">
             <div>Total: ${total}</div>
+            <DateRange
+                editableDateInputs={true}
+                onChange={item => {
+                    dateRangePayments(item.selection)
+                    setDateRange([item.selection])
+                }}
+                moveRangeOnFirstSelection={false}
+                ranges={dateRange}
+            />
             </aside>
             <div className="payment--list">
                 <MaterialTable title="Payments" 
