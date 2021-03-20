@@ -11,6 +11,7 @@ export const PaymentProvider = props => {
     const [tableTenants, setTableTenants] = useState([])
     const [paymentByTenant, setPaymentByTenant] = useState([])
     
+    
     const getPayments = () => {
         return fetch("http://localhost:8000/payments", {
             headers: {
@@ -18,6 +19,10 @@ export const PaymentProvider = props => {
             }
         })
         .then(r => r.json())
+        // .then(r=> {
+        //     setEndDate(new Date(r[0].date))
+        //     setStartDate(new Date(r[r.length - 1].date))
+        //     return r})
         .then(setPayments)
     }
 
@@ -27,7 +32,6 @@ export const PaymentProvider = props => {
                 "Authorization": `Token ${localStorage.getItem("cc_token")}`
             }
         })
-        // .then(r => r.json())
         .then(r => r.json())
         .then(setPayments)
     }
@@ -144,7 +148,8 @@ export const PaymentProvider = props => {
                                             postPayment, updatePayment, deletePayment,
                                             paymentTypes, getPaymentTypes, getTableTenants, 
                                             tableTenants, getPaymentsByTenant, 
-                                            postPaymentTenantDetails, dateRangePayments}}>
+                                            postPaymentTenantDetails, dateRangePayments
+                                            }}>
             {props.children}
         </PaymentContext.Provider>
     )

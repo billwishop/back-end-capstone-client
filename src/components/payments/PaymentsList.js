@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState, forwardRef} from 'react'
 import {PaymentContext} from './PaymentProvider.js'
-import MaterialTable from "material-table"
+import MaterialTable, { MTableToolbar } from "material-table"
 import { useHistory } from "react-router-dom"
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -22,6 +22,8 @@ import { DateRangePicker } from 'react-date-range';
 import { DateRange } from 'react-date-range'
 import 'react-date-range/dist/styles.css'; 
 import 'react-date-range/dist/theme/default.css';
+import './Payments.css';
+
 
 export const PaymentList = () => {
     const history = useHistory()
@@ -46,7 +48,6 @@ export const PaymentList = () => {
         .then(getPayments)
     }, [])
 
-
     useEffect(() => {
         setData(payments.map(p => (
             {
@@ -60,6 +61,7 @@ export const PaymentList = () => {
             }
             )))
     }, [payments])
+
 
     // calculates the total payments rendered at a given time
     useEffect(() => {
@@ -116,19 +118,19 @@ export const PaymentList = () => {
     return (
         <section className="payments">
             <aside className="payments--aside">
-            <div>Total: ${total}</div>
+            {/* <div>Total: ${total}</div> */}
             <DateRange
                 editableDateInputs={true}
                 onChange={item => {
-                    dateRangePayments(item.selection)
                     setDateRange([item.selection])
+                    dateRangePayments(item.selection)
                 }}
                 moveRangeOnFirstSelection={false}
                 ranges={dateRange}
             />
             </aside>
             <div className="payment--list">
-                <MaterialTable title="Payments" 
+                <MaterialTable title={`Payments - Total: $${total}`} 
                     columns={columns}
                     data={data}
                     icons={tableIcons}
@@ -138,7 +140,20 @@ export const PaymentList = () => {
                         emptyRowsWhenPaging: false,
                         pageSizeOptions: [5,10,20,50],
                         addRowPosition: 'first',
+                        loadingType: 'linear'
                         // searchAutoFocus: true
+                    }}
+                    components={{
+                        Toolbar: props => (
+                            <div>
+                                <MTableToolbar {...props} />
+                                <button className="btn btn--dateRange" 
+                                    onClick={() => {
+                                    getPayments()
+                                    // Set accordion date picker show to false
+                                }}>Clear Date Range</button>
+                            </div>
+                        )
                     }}
                     onRowClick={(e, rowData) => {
                         history.push(`/tenants/${rowData.tenant_id}`)
