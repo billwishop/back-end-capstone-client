@@ -1,13 +1,19 @@
-.navbar {
+/* .navbar {
     display: flex;
     flex-wrap: nowrap;
-    justify-content: left;
+    justify-content: space-between;
+} */
+
+.navbar--links {
+    display: flex;
+    flex-wrap: nowrap;
 }
 
 .navbar--item {
     flex-basis: 20%;
     list-style-type: none;
     font-size: medium;
+    padding-right: 5em;
 }
 
 .fakeLink {
@@ -15,5 +21,10 @@
     border: none;
     padding: 0!important;
     text-decoration: underline;
+    cursor: pointer;
+}
+
+.logout {
+    margin-top: 1em;
     cursor: pointer;
 }
