@@ -7,22 +7,24 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 export const NavBar = props => {
     return (
         <ul className="navbar">
-            <li className="navbar--item">
-                <Link className="nav-link" to="/">
-                    Home
-                </Link>
-            </li>
-            <li className="navbar--item">
-                <Link className="nav-link" to="/tenants">
-                    Tenants
-                </Link>
-            </li>
-            <li className="navbar--item">
-                <Link className="nav-link" to="/properties">
-                    Properties
-                </Link>
-            </li>
-            <li className="navbar--item">
+            <div className="navbar--links">
+                <li className="navbar--item">
+                    <Link className="nav-link" to="/">
+                        HOME
+                    </Link>
+                </li>
+                <li className="navbar--item">
+                    <Link className="nav-link" to="/tenants">
+                        TENANTS
+                    </Link>
+                </li>
+                <li className="navbar--item">
+                    <Link className="nav-link" to="/properties">
+                        PROPERTIES
+                    </Link>
+                </li>
+            </div>
+            <li className="navbar--item logout">
                 <FontAwesomeIcon className='icon' icon={faSignOutAlt} 
                     onClick={() => {
                         localStorage.removeItem("cc_token")

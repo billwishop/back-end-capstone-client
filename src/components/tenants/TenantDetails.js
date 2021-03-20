@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState, forwardRef} from 'react'
 import {PaymentContext} from '../payments/PaymentProvider'
-import MaterialTable from "material-table"
+import MaterialTable, { MTableToolbar } from "material-table"
 import { useHistory } from "react-router-dom"
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -17,13 +17,26 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
-import { CakeSharp } from '@material-ui/icons';
+import { Collapse } from '@material-ui/core';
+import { DateRange } from 'react-date-range'
+import 'react-date-range/dist/styles.css'; 
+import 'react-date-range/dist/theme/default.css';
+import '../payments/Payments.css'
+
 
 export const TenantDetails = (props) => {
-    const history = useHistory()
     const [total, setTotal] = useState("")
     const [data, setData] = useState([])
     const [columns, setColumns] = useState([])
+    const [display, setDisplay] = useState(false);
+    const [search, setSearch] = useState(true);
+    const [dateRange, setDateRange] = useState([
+        {
+            startDate: new Date(),
+            endDate: null,
+            key: 'selection'
+        }
+    ]);
     const {paymentByTenant, payments, paymentTypes, getPaymentTypes, singlePayment, getPayments, searchPayments, getSinglePayment, 
         postPayment, updatePayment, deletePayment, getTableTenants, tableTenants, getPaymentsByTenant, postPaymentTenantDetails} = useContext(PaymentContext)
     
@@ -107,10 +120,24 @@ export const TenantDetails = (props) => {
     return (
         <section className="payments">
             <aside className="payments--aside">
-                <div>Total: ${total}</div>
+            <Collapse in={display}>
+            <DateRange
+                editableDateInputs={true}
+                onChange={item => {
+                    setDateRange([item.selection])
+                    // dateRangePayments(item.selection) 
+                    // **********************************
+                    // replace ^ with a new function that sends date range
+                    // and id in the url to the back-end 
+                    
+                }}
+                moveRangeOnFirstSelection={false}
+                ranges={dateRange}
+            />
+            </Collapse>
             </aside>
-            <div className="payments--list">
-                <MaterialTable title={`Payments`}  // Add Tenant Name
+            <div className="payment--list">
+                <MaterialTable title={`Payments - Total: $${total}`}  // Add Tenant Name
                     columns={columns}
                     data={data}
                     icons={tableIcons}
@@ -119,7 +146,32 @@ export const TenantDetails = (props) => {
                         pageSize: 20,
                         emptyRowsWhenPaging: false,
                         pageSizeOptions: [5,10,20,50],
-                        addRowPosition: 'first'
+                        addRowPosition: 'first',
+                        // loadingType: 'linear',
+                        search: search,
+                        searchAutoFocus: true,
+                        headerStyle: {backgroundColor: '#E0E0E0', fontWeight: 'bold'},
+                        rowStyle: {backgroundColor: '#F3F3F3'}
+                    }}
+                    components={{
+                        Toolbar: props => (
+                            <div>
+                                <MTableToolbar {...props} />
+                                <button className="btn btn--dateRange"
+                                    disabled={display}
+                                    onClick={() => {
+                                    setDisplay(true)
+                                    setSearch(false)
+                                }}>Add Date Range</button>
+                                <button className="btn btn--dateRange"
+                                    disabled={search}
+                                    onClick={() => {
+                                    getPayments()
+                                    setDisplay(false)
+                                    setSearch(true)
+                                }}>Clear Date Range</button>
+                            </div>
+                        )
                     }}
                     editable={{
                         onRowAdd: payment => 
@@ -130,6 +182,9 @@ export const TenantDetails = (props) => {
                         
                         onRowUpdate: payment => 
                         updatePayment(payment)
+                    }}
+                    onSearchChange={() => {
+                        console.log(data)
                     }}
                     />
             </div>
