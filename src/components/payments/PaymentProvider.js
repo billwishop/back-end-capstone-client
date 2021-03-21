@@ -128,18 +128,18 @@ export const PaymentProvider = props => {
         .then(setPaymentByTenant)
     }
 
-    const dateRangePayments = dateRange => {
-        const d1 = formatDate(dateRange.startDate)
-        const d2 = formatDate(dateRange.endDate)
-        return fetch(`http://localhost:8000/payments?date=${d1}/${d2}`, {
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Token ${localStorage.getItem("cc_token")}`
-            }
-        })
-        .then(r => r.json())
-        .then(setPayments)
-    }
+    // const dateRangePayments = dateRange => {
+    //     const d1 = formatDate(dateRange.startDate)
+    //     const d2 = formatDate(dateRange.endDate)
+    //     return fetch(`http://localhost:8000/payments?date=${d1}/${d2}`, {
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "Authorization": `Token ${localStorage.getItem("cc_token")}`
+    //         }
+    //     })
+    //     .then(r => r.json())
+    //     .then(setPayments)
+    // }
 
 
     return (
@@ -148,8 +148,7 @@ export const PaymentProvider = props => {
                                             postPayment, updatePayment, deletePayment,
                                             paymentTypes, getPaymentTypes, getTableTenants, 
                                             tableTenants, getPaymentsByTenant, 
-                                            postPaymentTenantDetails, dateRangePayments,
-                                            setPayments
+                                            postPaymentTenantDetails
                                             }}>
             {props.children}
         </PaymentContext.Provider>

@@ -21,14 +21,17 @@ import { Collapse } from '@material-ui/core';
 import { DateRange } from 'react-date-range'
 import 'react-date-range/dist/styles.css'; 
 import 'react-date-range/dist/theme/default.css';
-import '../payments/Payments.css'
+import '../payments/Payments.css';
 import { PaymentSearch } from '../payments/PaymentsSearch';
+import { formatDate } from '../utility/Date';
+import { PaymentDateRange } from '../payments/PaymentDateRange';
 
 
 export const TenantDetails = (props) => {
     const [total, setTotal] = useState("")
     const [data, setData] = useState([])
     const [columns, setColumns] = useState([])
+    const [filteredPayments, setFilteredPayments] = useState(null)
     const [display, setDisplay] = useState(false);
     const [search, setSearch] = useState(true);
     const [dateRange, setDateRange] = useState([
@@ -38,8 +41,8 @@ export const TenantDetails = (props) => {
             key: 'selection'
         }
     ]);
-    const {paymentByTenant, payments, paymentTypes, getPaymentTypes, singlePayment, getPayments, searchPayments, getSinglePayment, 
-        postPayment, updatePayment, deletePayment, getTableTenants, tableTenants, getPaymentsByTenant, postPaymentTenantDetails} = useContext(PaymentContext)
+    const {paymentByTenant, payments, paymentTypes, getPaymentTypes, getPayments, postPayment, updatePayment, 
+        deletePayment, getTableTenants, tableTenants, getPaymentsByTenant, postPaymentTenantDetails} = useContext(PaymentContext)
     
     // Fetches and sets paymentByTenant, associated tenants 
     // and payment types on initial render
@@ -57,6 +60,19 @@ export const TenantDetails = (props) => {
 
 
     useEffect(() => {
+        if (filteredPayments != null) {
+        setData(filteredPayments.map(p => (
+            {
+                date: p.date,
+                full_name: p.tenant.full_name,
+                amount: '$'+p.amount,
+                ref_num: p.ref_num,
+                type: p.payment_type.id,
+                tenant_id: p.tenant.id,
+                payment_id: p.id
+            }
+            ))) 
+        } else {
         setData(paymentByTenant.map(p => (
             {
                 date: p.date,
@@ -67,17 +83,26 @@ export const TenantDetails = (props) => {
                 tenant_id: p.tenant.id,
                 payment_id: p.id
             }
-            )))
-    }, [paymentByTenant])
+            ))) 
+        }
+    }, [paymentByTenant, filteredPayments])
 
     // calculates the total payments rendered at a given time
     useEffect(() => {
-        let sum = 0
-        for (const payment of paymentByTenant){
-            sum += payment.amount
+        if (filteredPayments != null) {
+            let sum = 0
+            for (const payment of filteredPayments){
+                sum += payment.amount
+            }
+            setTotal(sum)
+        } else {
+            let sum = 0
+            for (const payment of paymentByTenant){
+                sum += payment.amount
+            }
+            setTotal(sum)
         }
-        setTotal(sum)
-    }, [paymentByTenant])
+    }, [paymentByTenant, filteredPayments])
     
 
     // sets the state for columns which gives instructions 
@@ -88,7 +113,7 @@ export const TenantDetails = (props) => {
             {title: 'Name', field: 'full_name', editable: 'never'},
             {title: 'Payment', field: 'amount'},
             {title: 'Ref #', field: 'ref_num'},
-            {title: 'Type', field: 'type', lookup: paymentTypes,},
+            {title: 'Type', field: 'type', lookup: paymentTypes, searchable: false},
             // add the tenant id to the columns so it's accessible when 
             // creating the tenant link but keep the column hidden
             {title: 'Tenant_Id', field: 'tenant_id', hidden: true},
@@ -126,11 +151,9 @@ export const TenantDetails = (props) => {
                 editableDateInputs={true}
                 onChange={item => {
                     setDateRange([item.selection])
-                    // dateRangePayments(item.selection) 
-                    // **********************************
-                    // replace ^ with a new function that sends date range
-                    // and id in the url to the back-end 
-                    
+
+                    setFilteredPayments(PaymentDateRange(paymentByTenant, formatDate(item.selection.startDate), 
+                    formatDate(item.selection.endDate)))
                 }}
                 moveRangeOnFirstSelection={false}
                 ranges={dateRange}
@@ -167,7 +190,7 @@ export const TenantDetails = (props) => {
                                 <button className="btn btn--dateRange"
                                     disabled={search}
                                     onClick={() => {
-                                    getPayments()
+                                    setFilteredPayments(null)
                                     setDisplay(false)
                                     setSearch(true)
                                 }}>Clear Date Range</button>

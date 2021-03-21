@@ -32,7 +32,7 @@ export const PaymentList = () => {
     const [data, setData] = useState([]);
     const [columns, setColumns] = useState([]);
     const [total, setTotal] = useState("");
-    const [filteredPayments, setFilteredPayments] = useState([])
+    const [filteredPayments, setFilteredPayments] = useState(null)
     const [display, setDisplay] = useState(false);
     const [search, setSearch] = useState(true);
     const [dateRange, setDateRange] = useState([
@@ -56,7 +56,7 @@ export const PaymentList = () => {
     useEffect(() => {
         // if payments have been filtered by date
         // filteredPayments will populate the list
-        if (filteredPayments.length > 0) {
+        if (filteredPayments != null) {
         setData(filteredPayments.map(p => (
             {
                 date: p.date,
@@ -85,7 +85,7 @@ export const PaymentList = () => {
 
     // calculates the total payments rendered at a given time
     useEffect(() => {
-        if (filteredPayments.length > 0) {
+        if (filteredPayments != null) {
             let sum = 0
             for (const payment of filteredPayments){
                 sum += payment.amount
@@ -170,7 +170,7 @@ export const PaymentList = () => {
                         emptyRowsWhenPaging: false,
                         pageSizeOptions: [5,10,20,50],
                         addRowPosition: 'first',
-                        // loadingType: 'linear',
+                        loadingType: 'linear',
                         search: search,
                         searchAutoFocus: true,
                         headerStyle: {backgroundColor: '#E0E0E0', fontWeight: 'bold'},
@@ -189,7 +189,7 @@ export const PaymentList = () => {
                                 <button className="btn btn--dateRange"
                                     disabled={search}
                                     onClick={() => {
-                                    setFilteredPayments([])
+                                    setFilteredPayments(null)
                                     setDisplay(false)
                                     setSearch(true)
                                 }}>Clear Date Range</button>
@@ -202,7 +202,7 @@ export const PaymentList = () => {
                     editable={{
                         onRowAdd: payment => 
                         postPayment(payment),                  
-                    
+
                         onRowDelete: payment => 
                         deletePayment(payment.payment_id),
                     

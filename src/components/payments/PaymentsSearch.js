@@ -2,7 +2,6 @@
 // when the user searches by name / ref_num
 
 export const PaymentSearch = (payments, searchTerm) => {
-    console.log(payments, searchTerm)
     const filtered_payments = payments.filter(p => 
         p.ref_num.toLowerCase().includes(searchTerm.toLowerCase())
         || 
