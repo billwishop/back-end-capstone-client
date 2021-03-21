@@ -22,6 +22,7 @@ import { DateRange } from 'react-date-range'
 import 'react-date-range/dist/styles.css'; 
 import 'react-date-range/dist/theme/default.css';
 import '../payments/Payments.css'
+import { PaymentSearch } from '../payments/PaymentsSearch';
 
 
 export const TenantDetails = (props) => {
@@ -183,8 +184,8 @@ export const TenantDetails = (props) => {
                         onRowUpdate: payment => 
                         updatePayment(payment)
                     }}
-                    onSearchChange={() => {
-                        console.log(data)
+                    onSearchChange={(e) => {
+                        setTotal(PaymentSearch(paymentByTenant, e))
                     }}
                     />
             </div>

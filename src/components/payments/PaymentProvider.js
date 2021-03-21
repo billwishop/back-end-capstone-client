@@ -148,7 +148,8 @@ export const PaymentProvider = props => {
                                             postPayment, updatePayment, deletePayment,
                                             paymentTypes, getPaymentTypes, getTableTenants, 
                                             tableTenants, getPaymentsByTenant, 
-                                            postPaymentTenantDetails, dateRangePayments
+                                            postPaymentTenantDetails, dateRangePayments,
+                                            setPayments
                                             }}>
             {props.children}
         </PaymentContext.Provider>
