@@ -15,6 +15,7 @@ export const TenantList = props => {
     useEffect(() => {
         getTenants()
     }, [])
+    console.log('render************')
 
     return (
         <div className="tenant--list">

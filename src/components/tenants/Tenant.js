@@ -70,7 +70,8 @@ export const Tenant = ({ tenant }) => {
             action={
                 <IconButton aria-label="settings">
                 <MoreVertIcon onClick={(e)=>{
-                    setExpanded(!expanded)
+                    getSingleTenant(tenant.id)
+                    .then(setExpanded(!expanded))
                 }}/>
                 </IconButton>
             }
@@ -88,8 +89,7 @@ export const Tenant = ({ tenant }) => {
                     <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <EditIcon className={`editIcon icon ${classes.pos2}`}   
                     onClick={()=> {
-                    getSingleTenant(tenant.id)
-                    .then(history.push(`/tenants/edit/${tenant.id}`))
+                    history.push(`/tenants/edit/${tenant.id}`)
                     }} />
                     <DeleteIcon className={`deleteIcon icon ${classes.pos2}`}  
                     onClick={()=> {
