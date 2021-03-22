@@ -10,7 +10,11 @@ export const Lease = ({lease, propertyId}) => {
         <div className="lease--card">
             <div className="lease-dates">Date range: {lease.lease_start} - {lease.lease_end}</div>
             <div className="lease-rent">Rent: ${lease.rent}</div>
-            <div className="lease-tenant">Tenant: {lease.tenant.full_name}</div>
+            <div className="lease-tenant">
+                Tenant: <Link to={`/tenants/${lease.tenant.id}`}>
+                        {lease.tenant.full_name}
+                        </Link>
+            </div>
             <DeleteIcon className="deleteIcon icon"
                 onClick={()=> {
                     deleteLease(propertyId, lease.id)
