@@ -19,7 +19,10 @@ code {
 }
 
 .addIcon:hover, 
-.deleteIcon:hover {
+.deleteIcon:hover,
+.editIcon:hover,
+.logOutIcon:hover,
+.menuIcon:hover {
   cursor: pointer;
 }
 

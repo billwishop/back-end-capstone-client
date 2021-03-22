@@ -5,28 +5,17 @@ import EditIcon from '@material-ui/icons/Edit';
 import {TenantContext} from './TenantProvider'
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CardHeader from '@material-ui/core/CardHeader';
 import IconButton from '@material-ui/core/IconButton';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Collapse } from '@material-ui/core';
 import { Divider } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 
 
 export const Tenant = ({ tenant }) => {
     const {getSingleTenant, deleteTenant} = useContext(TenantContext)
     const [expanded, setExpanded] = useState(false);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
-
 
     // state variable to hold active lease to display current address
     const [home, setHome] = useState(null)
@@ -83,20 +72,6 @@ export const Tenant = ({ tenant }) => {
                 <MoreVertIcon onClick={(e)=>{
                     setExpanded(!expanded)
                 }}/>
-
-                {/* <div>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <EditIcon className={`editIcon icon ${classes.pos2}`}   
-                onClick={()=> {
-                getSingleTenant(tenant.id)
-                .then(history.push(`/tenants/edit/${tenant.id}`))
-                }} />
-                <DeleteIcon className={`deleteIcon icon ${classes.pos2}`}  
-                onClick={()=> {
-                deleteTenant(tenant.id)
-                }} />
-                </Collapse> 
-                </div> */}
                 </IconButton>
             }
         />
@@ -136,28 +111,6 @@ export const Tenant = ({ tenant }) => {
                         <div>No associated properties</div>
                     </Typography>
                 }
-
-        {/* <EditIcon className={`editIcon icon ${classes.pos2}`}   
-            onClick={()=> {
-                getSingleTenant(tenant.id)
-                .then(history.push(`/tenants/edit/${tenant.id}`))
-            }} />
-        <DeleteIcon className={`deleteIcon icon ${classes.pos2}`}  
-            onClick={()=> {
-                deleteTenant(tenant.id)
-            }} /> */}
-        
-        {/* <CardActions disableSpacing>
-            <IconButton
-                className='icon expandIcon'
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="show more"
-            >
-                <ExpandMoreIcon />
-            </IconButton>
-        </CardActions> */}
-
     </Card>
         )
 }
