@@ -6,6 +6,8 @@ import {Tenant} from './Tenant.js'
 import './tenant.css'
 import { Add } from '@material-ui/icons';
 import {Card} from '@material-ui/core'
+import Input from '@material-ui/core/Input';
+
 
 export const TenantList = props => {
     const {tenants, getTenants, searchTenants} = useContext(TenantContext)
@@ -16,17 +18,26 @@ export const TenantList = props => {
 
     return (
         <div className="tenant--list">
-            <h1 className="tenants--header">Tenants</h1>
-            <SearchIcon className="searchIcon icon"/> 
-            <input className="tenants-search" 
+            <div className="tenants--header">
+            <h1 className="tenants--label">Tenants</h1>
+            <div className="tenants--searchAdd">
+            <Input
+                className="search tenantSearch"
+                startAdornment={
+                    <SearchIcon className="searchIcon icon"/> 
+                }
                 onChange={(e)=> {
                     searchTenants(e.target.value)
                 }}
-                placeholder={'Search'}/>
+                placeholder={' Search'}
+                autoFocus={true}
+                />
             <AddBox className="addIcon icon" 
                 onClick={()=> {
                     props.history.push("/tenants/create")
                 }} />
+            </div>
+            </div>
             <div className="tenants">
                 {
                     tenants.map(tenant => <Tenant key={tenant.id} tenant={tenant} />)
