@@ -19,25 +19,25 @@ export const TenantList = props => {
     return (
         <div className="tenant--list">
             <div className="tenants--header">
-            <h1 className="tenants--label">Tenants</h1>
-            <div className="tenants--searchAdd">
-            <Input
-                className="search tenantSearch"
-                startAdornment={
-                    <SearchIcon className="searchIcon icon"/> 
-                }
-                onChange={(e)=> {
-                    searchTenants(e.target.value)
-                }}
-                placeholder={' Search'}
-                autoFocus={true}
-                />
-            <AddBox className="addIcon icon" 
-                onClick={()=> {
-                    props.history.push("/tenants/create")
-                }} />
-            </div>
-            </div>
+                <div className="tenants--label">Tenants</div>
+                    <div className="tenants--searchAdd">
+                    <Input
+                        className="search tenantSearch"
+                        startAdornment={
+                            <SearchIcon className="searchIcon icon"/> 
+                        }
+                        onChange={(e)=> {
+                            searchTenants(e.target.value)
+                        }}
+                        placeholder={' Search'}
+                        autoFocus={true}
+                        />
+                    <AddBox className="addIcon icon" 
+                        onClick={()=> {
+                            props.history.push("/tenants/create")
+                        }} />
+                    </div>
+                </div>
             <div className="tenants">
                 {
                     tenants.map(tenant => <Tenant key={tenant.id} tenant={tenant} />)

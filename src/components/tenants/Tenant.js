@@ -13,7 +13,10 @@ import CardHeader from '@material-ui/core/CardHeader';
 import IconButton from '@material-ui/core/IconButton';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Collapse } from '@material-ui/core';
-
+import { Divider } from '@material-ui/core';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 
 export const Tenant = ({ tenant }) => {
@@ -43,7 +46,8 @@ export const Tenant = ({ tenant }) => {
         root: {
             minWidth: 275,
             padding: '1em',
-            backgroundColor: '#E0E0E0'
+            backgroundColor: '#E0E0E0',
+            boxShadow: '0px 5px 15px rgba(0,0,0,0.2)'
         },
         title: {
             fontSize: 14,
@@ -55,6 +59,9 @@ export const Tenant = ({ tenant }) => {
         pos2: {
             paddingLeft: '1em',
             marginTop: '15px'
+        },
+        options: {
+            marginTop: '0'
         }
     });
 
@@ -71,13 +78,52 @@ export const Tenant = ({ tenant }) => {
                     </Link>
                 </Typography>
             }
+            action={
+                <IconButton aria-label="settings">
+                <MoreVertIcon onClick={(e)=>{
+                    setExpanded(!expanded)
+                }}/>
+
+                {/* <div>
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <EditIcon className={`editIcon icon ${classes.pos2}`}   
+                onClick={()=> {
+                getSingleTenant(tenant.id)
+                .then(history.push(`/tenants/edit/${tenant.id}`))
+                }} />
+                <DeleteIcon className={`deleteIcon icon ${classes.pos2}`}  
+                onClick={()=> {
+                deleteTenant(tenant.id)
+                }} />
+                </Collapse> 
+                </div> */}
+                </IconButton>
+            }
         />
-        <Typography className={classes.pos} component='h2'>
-            { tenant.phone_number }
-        </Typography>
-        <Typography className={classes.pos}>
-            { tenant.email }
-        </Typography>
+        <div className='tenant--options'>
+            <div>
+            <Typography className={classes.pos} component='h2'>
+                { tenant.phone_number }
+            </Typography>
+            <Typography className={classes.pos}>
+                { tenant.email }
+            </Typography>
+            </div>
+            <div className={classes.options}>
+                    <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <EditIcon className={`editIcon icon ${classes.pos2}`}   
+                    onClick={()=> {
+                    getSingleTenant(tenant.id)
+                    .then(history.push(`/tenants/edit/${tenant.id}`))
+                    }} />
+                    <DeleteIcon className={`deleteIcon icon ${classes.pos2}`}  
+                    onClick={()=> {
+                    deleteTenant(tenant.id)
+                    }} />
+                    </Collapse> 
+            </div>
+        </div>
+        <Divider className={classes.pos2} />
         {home != null 
                 ?   
                     <Typography className={classes.pos2}>
@@ -90,7 +136,8 @@ export const Tenant = ({ tenant }) => {
                         <div>No associated properties</div>
                     </Typography>
                 }
-        <EditIcon className={`editIcon icon ${classes.pos2}`}   
+
+        {/* <EditIcon className={`editIcon icon ${classes.pos2}`}   
             onClick={()=> {
                 getSingleTenant(tenant.id)
                 .then(history.push(`/tenants/edit/${tenant.id}`))
@@ -98,7 +145,8 @@ export const Tenant = ({ tenant }) => {
         <DeleteIcon className={`deleteIcon icon ${classes.pos2}`}  
             onClick={()=> {
                 deleteTenant(tenant.id)
-            }} />
+            }} /> */}
+        
         {/* <CardActions disableSpacing>
             <IconButton
                 className='icon expandIcon'
