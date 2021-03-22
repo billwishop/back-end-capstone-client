@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState, forwardRef} from 'react'
 import {PaymentContext} from '../payments/PaymentProvider'
 import MaterialTable, { MTableToolbar } from "material-table"
-import { useHistory } from "react-router-dom"
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
 import Check from '@material-ui/icons/Check';

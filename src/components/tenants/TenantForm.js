@@ -37,10 +37,14 @@ export const TenantForm = props => {
     const editMode = props.match.params.hasOwnProperty("tenant_id")
 
     useEffect(() => {
-        if (editMode){
+        if (props.match.params.hasOwnProperty("tenant_id")){
             getSingleTenant(parseInt(props.match.params.tenant_id))
         }
     }, [])
+
+    useEffect(() => {
+        setTenant(singleTenant)
+    }, [singleTenant])
 
 
     const handleControlledInputChange = (event) => {
@@ -54,10 +58,10 @@ export const TenantForm = props => {
             // PUT
             updateTenant({
                 id: singleTenant.id,
-                phone_number: phone_number.current.value,
-                email: email.current.value,
-                full_name: full_name.current.value
-            }) .then(setSingleTenant({}))
+                phone_number: tenant.phone_number,
+                email: tenant.email,
+                full_name: tenant.full_name
+            }) .then(setSingleTenant([]))
         } else {
             // POST
             postTenant({
@@ -67,61 +71,16 @@ export const TenantForm = props => {
             })
         }
     }
-
+    console.log('props',props)
+    console.log('form-render')
+    console.log(editMode)
+    console.log('singleTenant', singleTenant)    
     return (
-        // <form className='tenant--form'>
-        //     <h2>{editMode ? "Update Tenant" : "Add Tenant"}</h2>
-        //     <div>
-        //         <input type="text" name="full_name" required autoFocus className="form-control"
-        //                     placeholder="Tenant name" ref={full_name}
-        //                     defaultValue={editMode ?singleTenant.full_name :tenant.full_name}
-        //                     onChange={handleControlledInputChange}
-        //                     />
-        //     </div>
-        //     <div>
-        //     <input type="text" name="phone_number" required autoFocus className="form-control"
-        //                 placeholder="Phone number" ref={phone_number}
-        //                 defaultValue={editMode ?singleTenant.phone_number :tenant.phone_number}
-        //                 onChange={handleControlledInputChange}
-        //             />
-        //     </div>
-        //     <div>
-        //     <input type="text" name="email" required autoFocus className="form-control"
-        //                 placeholder="Email" ref={email}
-        //                 defaultValue={editMode ?singleTenant.email :tenant.email}
-        //                 onChange={handleControlledInputChange}
-        //             />
-        //     </div>
-        //     <button type="cancel"
-        //         onClick={evt => {
-        //             props.history.push("/tenants")
-        //             setSingleTenant({})
-        //         }}
-        //         className="btn btn-primary">
-        //         Cancel
-        //     </button>
-        //     <button type="submit"
-        //         onClick={evt => {
-        //             evt.preventDefault()
-        //             constructTenant()
-        //             props.history.push("/tenants")
-        //         }}
-        //         className="btn btn-primary">
-        //         {editMode ? "Save Updates" : "Add Tenant"}
-        //     </button>
-        // </form>
-        <div>
-        {/* <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open form dialog
-      </Button> */}
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" disableBackdropClick disableEscapeKeyDown>
+    <div>
+    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" disableBackdropClick disableEscapeKeyDown>
         <DialogTitle id="form-dialog-title">{editMode ? "Update Tenant" : "Add Tenant"}</DialogTitle>
         <DialogContent>
-          {/* <DialogContentText>
-            To subscribe to this website, please enter your email address here. We will send updates
-            occasionally.
-          </DialogContentText> */}
-          <TextField
+        <TextField
             autoFocus
             margin="dense"
             label="Name"
@@ -129,20 +88,20 @@ export const TenantForm = props => {
             name="full_name"
             ref={full_name}
             fullWidth
-            defaultValue={editMode ?singleTenant.full_name :tenant.full_name}
+            defaultValue={editMode ?singleTenant.full_name : tenant.phone_number}
             onChange={handleControlledInputChange}
-          />
-          <TextField
+        />
+        <TextField
             margin="dense"
             label="Phone Number"
             type="text"
             name="phone_number"
-            name={phone_number}
+            ref={phone_number}
             fullWidth
             defaultValue={editMode ?singleTenant.phone_number :tenant.phone_number}
             onChange={handleControlledInputChange}
-          />
-          <TextField
+        />
+        <TextField
             margin="dense"
             label="Email"
             type="email"
@@ -151,23 +110,24 @@ export const TenantForm = props => {
             fullWidth
             defaultValue={editMode ?singleTenant.email :tenant.email}
             onChange={handleControlledInputChange}
-          />
+        />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => {
-              props.history.push("/tenants")
-          }} color="primary">
+        <Button onClick={() => {
+            setSingleTenant([])
+            props.history.push("/tenants")
+        }} color="primary">
             Cancel
-          </Button>
-          <Button onClick={handleClose} color="primary">
-          {editMode ? "Save Updates" : "Add Tenant"}
-          </Button>
+        </Button>
+        <Button type="submit" onClick={evt => {
+                    evt.preventDefault()
+                    constructTenant()
+                    props.history.push("/tenants")
+                }} color="primary">
+        {editMode ? "Save Updates" : "Add Tenant"}
+        </Button>
         </DialogActions>
-      </Dialog>
+    </Dialog>
     </div>
     )
-
-
-
-    
 }

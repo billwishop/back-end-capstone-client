@@ -19,32 +19,6 @@ export const NavBar = props => {
     setAnchorEl(null);
   };
     return (
-        // <ul className="navbar">
-        //     <div className="navbar--links">
-        //         <li className="navbar--item">
-        //             <Link className="nav-link" to="/">
-        //                 HOME
-        //             </Link>
-        //         </li>
-        //         <li className="navbar--item">
-        //             <Link className="nav-link" to="/tenants">
-        //                 TENANTS
-        //             </Link>
-        //         </li>
-        //         <li className="navbar--item">
-        //             <Link className="nav-link" to="/properties">
-        //                 PROPERTIES
-        //             </Link>
-        //         </li>
-        //     </div>
-        //     <li className="navbar--item logout">
-        //         <FontAwesomeIcon className='icon logOutIcon' icon={faSignOutAlt} 
-        //             onClick={() => {
-        //                 localStorage.removeItem("cc_token")
-        //                 props.history.push({ pathname: "/" })
-        //             }}/>
-        //     </li>
-        // </ul>
         <>
             <FontAwesomeIcon className='icon menuIcon fa-2x' icon={faBars}
             onClick={handleClick} />
