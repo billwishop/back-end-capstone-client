@@ -23,7 +23,7 @@ import 'react-date-range/dist/theme/default.css';
 import './Payments.css';
 import { Collapse } from '@material-ui/core';
 import { PaymentSearch } from './PaymentsSearch.js';
-import { formatDate } from '../utility/Date.js';
+import { yearFirst } from '../utility/Date.js';
 import { PaymentDateRange } from './PaymentDateRange.js';
 
 
@@ -151,8 +151,8 @@ export const PaymentList = () => {
                 editableDateInputs={true}
                 onChange={item => {
                     setDateRange([item.selection])
-                    setFilteredPayments(PaymentDateRange(payments, formatDate(item.selection.startDate), 
-                    formatDate(item.selection.endDate)))
+                    setFilteredPayments(PaymentDateRange(payments, yearFirst(item.selection.startDate), 
+                    yearFirst(item.selection.endDate)))
                 }}
                 moveRangeOnFirstSelection={false}
                 ranges={dateRange}
@@ -189,9 +189,10 @@ export const PaymentList = () => {
                                 <button className="btn btn--dateRange"
                                     disabled={search}
                                     onClick={() => {
-                                    setFilteredPayments(null)
-                                    setDisplay(false)
-                                    setSearch(true)
+                                    // setFilteredPayments(null)
+                                    // setDisplay(false)
+                                    // setSearch(true)
+                                    window.location.reload()
                                 }}>Clear Date Range</button>
                             </div>
                         )

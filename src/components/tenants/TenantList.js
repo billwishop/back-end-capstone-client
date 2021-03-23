@@ -4,8 +4,6 @@ import AddBox from '@material-ui/icons/AddBox';
 import SearchIcon from '@material-ui/icons/Search';
 import {Tenant} from './Tenant.js'
 import './tenant.css'
-import { Add } from '@material-ui/icons';
-import {Card} from '@material-ui/core'
 import Input from '@material-ui/core/Input';
 
 
@@ -15,13 +13,12 @@ export const TenantList = props => {
     useEffect(() => {
         getTenants()
     }, [])
-    console.log('render************')
 
     return (
         <div className="tenant--list">
             <div className="tenants--header">
                 <div className="tenants--label">Tenants</div>
-                    <div className="tenants--searchAdd">
+                <div className="tenants--searchAdd">
                     <Input
                         className="search tenantSearch"
                         startAdornment={
@@ -37,7 +34,7 @@ export const TenantList = props => {
                         onClick={()=> {
                             props.history.push("/tenants/create")
                         }} />
-                    </div>
+                </div>
                 </div>
             <div className="tenants">
                 {

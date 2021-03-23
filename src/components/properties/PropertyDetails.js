@@ -1,9 +1,8 @@
-import React, {useContext, useEffect, useState, forwardRef} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {PropertyContext} from './PropertyProvider.js'
 import AddBox from '@material-ui/icons/AddBox';
-import {Property} from './Property.js'
-import { Add } from '@material-ui/icons';
 import { Lease } from './Lease.js';
+import './properties.css'
 
 export const PropertyDetails = props => {
     const {singleProperty, getSingleProperty} = useContext(PropertyContext)
@@ -11,7 +10,9 @@ export const PropertyDetails = props => {
     const [inactiveLeases, setInactiveLeases] = useState([])
 
     useEffect(() => {
+        if (!props.match.params.hasOwnProperty("lease_id")){
         getSingleProperty(parseInt(props.match.params.property_id))
+        }
     },[])
 
     useEffect(() => {
@@ -24,31 +25,36 @@ export const PropertyDetails = props => {
 
     return (
         <section className="property--details">
-            <h1 className="property--header">{singleProperty.street}</h1>
-            <h3>{singleProperty.city}, {singleProperty.state}, {singleProperty.postal_code}</h3>
-            <div className="lease--add">
-                Add Lease Agreement 
-                <Add className="addIcon icon"
-                    onClick={()=>{
-                        props.history.push(`/properties/${props.match.params.property_id}/lease`)
-                    }} />
+            <div className="property--header">
+                <div className="property--label">
+                    <div>{singleProperty.street}</div>
+                    <div>{singleProperty.city}, {singleProperty.state}, {singleProperty.postal_code}</div>
+                </div>
+                <div className="lease--add" onClick={()=>{
+                            props.history.push(`/properties/${props.match.params.property_id}/lease`)
+                        }}>
+                    <div className="lease--addStatement">Add Lease Agreement</div> 
+                    <AddBox className="addIcon icon addLeaseIcon" />
+                </div>
             </div>
-            {Object.keys(singleProperty).length>0&&
-            <div className="lease--current">
-                {activeLeases.length > 1 ? <h3>Current Leases</h3> :<h3>Current Lease:</h3>}
-                {activeLeases.length > 0
-                ? activeLeases.map(l => <Lease key={l.id} lease={l} propertyId={l.id} />)   
-                : <div>No active leases to display.</div>
-                }
-            </div>}
-            {Object.keys(singleProperty).length>0&&
-            <div className="lease--inactive">
-                {inactiveLeases.length > 1 ? <h3>Inactive Leases</h3> :<h3>Inactive Lease:</h3>}
-                {inactiveLeases.length > 0
-                ? inactiveLeases.map(l => <Lease key={l.id} lease={l} propertyId={l.id} />)   
-                : <div>No inactive leases to display.</div>
-                }
-            </div>}
+            <div className="leases">
+                {Object.keys(singleProperty).length>0&&
+                <div className="lease--current">
+                    {activeLeases.length > 1 ? <div className="lease--header">Current Leases</div> :<div className="lease--header">Current Lease:</div>}
+                    {activeLeases.length > 0
+                    ? activeLeases.map(l => <Lease key={l.id} lease={l} propertyId={singleProperty.id} />)   
+                    : <div className="lease--none">No active leases to display.</div>
+                    }
+                </div>}
+                {Object.keys(singleProperty).length>0&&
+                <div className="lease--inactive">
+                    {inactiveLeases.length > 1 ? <div className="lease--header">Inactive Leases:</div> :<div className="lease--header">Inactive Lease:</div>}
+                    {inactiveLeases.length > 0
+                    ? inactiveLeases.map(l => <Lease key={l.id} lease={l} propertyId={singleProperty.id} />)   
+                    : <div className="lease--none">No inactive leases to display.</div>
+                    }
+                </div>}
+            </div>
 
         </section>
     )

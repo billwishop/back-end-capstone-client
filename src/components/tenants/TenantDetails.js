@@ -22,7 +22,7 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import '../payments/Payments.css';
 import { PaymentSearch } from '../payments/PaymentsSearch';
-import { formatDate } from '../utility/Date';
+import { yearFirst } from '../utility/Date';
 import { PaymentDateRange } from '../payments/PaymentDateRange';
 
 
@@ -151,8 +151,8 @@ export const TenantDetails = (props) => {
                 onChange={item => {
                     setDateRange([item.selection])
 
-                    setFilteredPayments(PaymentDateRange(paymentByTenant, formatDate(item.selection.startDate), 
-                    formatDate(item.selection.endDate)))
+                    setFilteredPayments(PaymentDateRange(paymentByTenant, yearFirst(item.selection.startDate), 
+                    yearFirst(item.selection.endDate)))
                 }}
                 moveRangeOnFirstSelection={false}
                 ranges={dateRange}
