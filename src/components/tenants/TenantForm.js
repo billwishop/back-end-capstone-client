@@ -71,10 +71,7 @@ export const TenantForm = props => {
             })
         }
     }
-    console.log('props',props)
-    console.log('form-render')
-    console.log(editMode)
-    console.log('singleTenant', singleTenant)    
+    
     return (
     <div>
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" disableBackdropClick disableEscapeKeyDown>

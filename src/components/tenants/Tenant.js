@@ -89,11 +89,11 @@ export const Tenant = ({ tenant }) => {
                     <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <EditIcon className={`editIcon icon ${classes.pos2}`}   
                     onClick={()=> {
-                    history.push(`/tenants/edit/${tenant.id}`)
+                        history.push(`/tenants/edit/${tenant.id}`)
                     }} />
                     <DeleteIcon className={`deleteIcon icon ${classes.pos2}`}  
                     onClick={()=> {
-                    deleteTenant(tenant.id)
+                        history.push(`/tenants/delete/${tenant.id}`)
                     }} />
                     </Collapse> 
             </div>

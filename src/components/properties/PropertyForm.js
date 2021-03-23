@@ -1,10 +1,28 @@
 import React, {useContext, useState, useEffect, useRef} from 'react'
 import {PropertyContext} from './PropertyProvider'
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
 export const PropertyForm = props => {
-    const {properties, singleProperty, getProperties, getSingleProperty,
-        updateProperty, deleteProperty, postProperty, setSingleProperty} = useContext(PropertyContext)
+    const {singleProperty, getSingleProperty,
+        updateProperty, postProperty, setSingleProperty} = useContext(PropertyContext)
     
+    // State variable to control when the modal will appear
+    const [open, setOpen] = useState(true);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     const [property, setProperty] = useState({
         street:"",
         city:"",
@@ -25,6 +43,10 @@ export const PropertyForm = props => {
         }
     }, [])
 
+    useEffect(() => {
+        setProperty(singleProperty)
+    }, [singleProperty])
+
     const handleControlledInputChange = (event) => {
         const newProperty = Object.assign({}, property)          // Create copy
         newProperty[event.target.name] = event.target.value    // Modify copy
@@ -36,10 +58,10 @@ export const PropertyForm = props => {
             // PUT
             updateProperty({
                 id: singleProperty.id,
-                street: street.current.value,
-                city: city.current.value,
-                state: state.current.value,
-                postal_code: postal_code.current.value
+                street: property.street,
+                city: property.city,
+                state: property.state,
+                postal_code: property.postal_code
             }) .then(setSingleProperty({}))
         } else {
             // POST
@@ -54,63 +76,68 @@ export const PropertyForm = props => {
 
 
     return (
-        <form className='property--form'>
-            <h2>{editMode ? "Update Property" : "Add Property"}</h2>
-            <div>
-                <input type="text" name="street" required autoFocus className="form-control"
-                            placeholder="Street" ref={street}
-                            defaultValue={editMode ?singleProperty.street :property.street}
-                            onChange={handleControlledInputChange}
-                            />
-            </div>
-            <div>
-            <input type="text" name="city" required autoFocus className="form-control"
-                        placeholder="City" ref={city}
-                        defaultValue={editMode ?singleProperty.city :property.city}
-                        onChange={handleControlledInputChange}
-                    />
-            </div>
-            <div>
-            <input type="text" name="state" required autoFocus className="form-control"
-                        placeholder="State" ref={state}
-                        defaultValue={editMode ?singleProperty.state :property.state}
-                        onChange={handleControlledInputChange}
-                    />
-            </div>
-            <div>
-            <input type="text" name="postal_code" required autoFocus className="form-control"
-                        placeholder="Postal Code" ref={postal_code}
-                        defaultValue={editMode ?singleProperty.postal_code :property.postal_code}
-                        onChange={handleControlledInputChange}
-                    />
-            </div>
-            <button type="cancel"
-                onClick={() => {
-                    props.history.push("/properties")
-                    setSingleProperty({})
-                }}
-                className="btn btn-primary">
-                Cancel
-            </button>
-            <button type="submit"
-                onClick={evt => {
+        <div>
+    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" disableBackdropClick disableEscapeKeyDown>
+        <DialogTitle id="form-dialog-title">{editMode ? "Update Property" : "Add Property"}</DialogTitle>
+        <DialogContent>
+        <TextField
+            autoFocus
+            margin="dense"
+            label="Street"
+            type="text"
+            name="street"
+            ref={street}
+            fullWidth
+            defaultValue={editMode ?singleProperty.street : ""}
+            onChange={handleControlledInputChange}
+        />
+        <TextField
+            margin="dense"
+            label="City"
+            type="text"
+            name="city"
+            ref={city}
+            fullWidth
+            defaultValue={editMode ?singleProperty.city :""}
+            onChange={handleControlledInputChange}
+        />
+        <TextField
+            margin="dense"
+            label="State"
+            type="state"
+            name="state"
+            ref={state}
+            fullWidth
+            defaultValue={editMode ?singleProperty.state :""}
+            onChange={handleControlledInputChange}
+        />
+        <TextField
+            margin="dense"
+            label="Postal Code"
+            type="postal_code"
+            name="postal_code"
+            ref={postal_code}
+            fullWidth
+            defaultValue={editMode ?singleProperty.postal_code :""}
+            onChange={handleControlledInputChange}
+        />
+        </DialogContent>
+        <DialogActions>
+        <Button onClick={() => {
+            setSingleProperty([])
+            props.history.push("/properties")
+        }} color="primary">
+            Cancel
+        </Button>
+        <Button type="submit" onClick={evt => {
                     evt.preventDefault()
                     constructProperty()
                     props.history.push("/properties")
-                }}
-                className="btn btn-primary">
-                {editMode ? "Save Updates" : "Add Property"}
-            </button>
-            {/* {editMode ? ""
-                :<button type="submit"
-                onClick={evt => {
-                    evt.preventDefault()
-                    constructTenant()
-                    props.history.push("/tenants/create")
-                }}
-                className="btn btn-primary">
-                Save + Add Another
-            </button>} */}
-        </form>
+                }} color="primary">
+        {editMode ? "Save Updates" : "Add property"}
+        </Button>
+        </DialogActions>
+    </Dialog>
+    </div>
     )
 }
