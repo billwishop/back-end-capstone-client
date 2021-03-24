@@ -8,7 +8,7 @@ import './properties.css'
 
 
 export const PropertyList = (props) => {
-    const {properties, getProperties, postProperty} = useContext(PropertyContext)
+    const {properties, getProperties, searchProperties} = useContext(PropertyContext)
 
     useEffect(() => {
         getProperties()
@@ -25,9 +25,7 @@ export const PropertyList = (props) => {
                             <SearchIcon className="searchIcon icon"/> 
                         }
                         onChange={(e)=> {
-                            // searchProperty(e.target.value) 
-                            // write provider function and back-end query
-                            console.log(e.target.value)
+                            searchProperties(e.target.value)
                         }}
                         placeholder={' Search'}
                         autoFocus={true}

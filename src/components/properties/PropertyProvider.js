@@ -85,10 +85,21 @@ export const PropertyProvider = props => {
         .then(()=> getSingleProperty(propertyId))
     }
 
+    const searchProperties = searchTerm => {
+        return fetch(`http://localhost:8000/properties?search=${searchTerm}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("cc_token")}`
+            }
+        })
+        .then(r => r.json())
+        .then(setProperties)
+    }
+
     return (
         <PropertyContext.Provider value={{properties, setSingleProperty, singleProperty, getProperties, getSingleProperty,
                                             updateProperty, deleteProperty, postProperty,
-                                            postLease, deleteLease}}>
+                                            postLease, deleteLease, searchProperties}}>
             {props.children}
         </PropertyContext.Provider>
     )
