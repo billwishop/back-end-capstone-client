@@ -49,7 +49,7 @@ export const PropertyForm = props => {
 
     const handleControlledInputChange = (event) => {
         const newProperty = Object.assign({}, property)          // Create copy
-        newProperty[event.target.name] = event.target.value    // Modify copy
+        newProperty[event.target.name] = event.target.value      // Modify copy
         setProperty(newProperty)                                 // Set copy as new state
     }
 
@@ -76,7 +76,7 @@ export const PropertyForm = props => {
 
 
     return (
-        <div>
+    <div>
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" disableBackdropClick disableEscapeKeyDown>
         <DialogTitle id="form-dialog-title">{editMode ? "Update Property" : "Add Property"}</DialogTitle>
         <DialogContent>

@@ -85,7 +85,7 @@ export const TenantForm = props => {
             name="full_name"
             ref={full_name}
             fullWidth
-            defaultValue={editMode ?singleTenant.full_name : tenant.phone_number}
+            defaultValue={editMode ?singleTenant.full_name : ""}
             onChange={handleControlledInputChange}
         />
         <TextField
@@ -95,7 +95,7 @@ export const TenantForm = props => {
             name="phone_number"
             ref={phone_number}
             fullWidth
-            defaultValue={editMode ?singleTenant.phone_number :tenant.phone_number}
+            defaultValue={editMode ?singleTenant.phone_number :""}
             onChange={handleControlledInputChange}
         />
         <TextField
@@ -105,7 +105,7 @@ export const TenantForm = props => {
             name="email"
             ref={email}
             fullWidth
-            defaultValue={editMode ?singleTenant.email :tenant.email}
+            defaultValue={editMode ?singleTenant.email :""}
             onChange={handleControlledInputChange}
         />
         </DialogContent>
