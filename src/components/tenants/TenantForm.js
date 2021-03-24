@@ -1,26 +1,14 @@
-import React, {useContext, useState, useEffect, useRef} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import {TenantContext} from './TenantProvider'
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
 export const TenantForm = props => {
     const {singleTenant, getSingleTenant, setSingleTenant, updateTenant, postTenant} = useContext(TenantContext)
-
-    // State variable to control when the modal will appear
-    const [open, setOpen] = useState(true);
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     // for edit mode - a new tenant will be constructed 
     // and set before being passed into updateTenant()
@@ -29,10 +17,6 @@ export const TenantForm = props => {
         email:"",
         full_name:""
     })
-
-    const full_name = useRef()
-    const phone_number = useRef()
-    const email = useRef()
 
     const editMode = props.match.params.hasOwnProperty("tenant_id")
 
@@ -74,7 +58,7 @@ export const TenantForm = props => {
     
     return (
     <div>
-    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" disableBackdropClick disableEscapeKeyDown>
+    <Dialog open={true} aria-labelledby="form-dialog-title" disableBackdropClick disableEscapeKeyDown>
         <DialogTitle id="form-dialog-title">{editMode ? "Update Tenant" : "Add Tenant"}</DialogTitle>
         <DialogContent>
         <TextField
@@ -83,7 +67,6 @@ export const TenantForm = props => {
             label="Name"
             type="text"
             name="full_name"
-            ref={full_name}
             fullWidth
             defaultValue={editMode ?singleTenant.full_name : ""}
             onChange={handleControlledInputChange}
@@ -93,7 +76,6 @@ export const TenantForm = props => {
             label="Phone Number"
             type="text"
             name="phone_number"
-            ref={phone_number}
             fullWidth
             defaultValue={editMode ?singleTenant.phone_number :""}
             onChange={handleControlledInputChange}
@@ -103,7 +85,6 @@ export const TenantForm = props => {
             label="Email"
             type="email"
             name="email"
-            ref={email}
             fullWidth
             defaultValue={editMode ?singleTenant.email :""}
             onChange={handleControlledInputChange}
