@@ -1,12 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {Link} from 'react-router-dom'
 import './Login.css'
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
 
 export const Login = props => {
-    const email = React.createRef()
-    const password = React.createRef()
-    const invalidDialog = React.createRef()
 
+    const [user, setUser] = useState({})
+
+    const handleControlledInputChange = (event) => {
+        const loggedInUser = Object.assign({}, user)            // Create copy
+        loggedInUser[event.target.name] = event.target.value    // Modify copy
+        setUser(loggedInUser)                                   // Set copy as new state
+    }
 
     const handleLogin = e => {
         e.preventDefault()
@@ -18,8 +28,8 @@ export const Login = props => {
                 'Accept': 'application/json'
             },
             body: JSON.stringify({
-                username: email.current.value,
-                password: password.current.value
+                username: user.email,
+                password: user.password
             })
         })
             .then(r => r.json())
@@ -29,45 +39,45 @@ export const Login = props => {
                     props.history.push('/')
                 }
                 else {
-                    invalidDialog.current.showModal()
+                    alert("Email or password was not valid.")
                 }
             })
     }
 
     return (
-        <main className="container--login">
-            <dialog className="dialog dialog--auth" ref={invalidDialog}>
-                <div>Email or password was not valid.</div>
-                <button className="button--close" onClick={e => invalidDialog.current.close()}>Close</button>
-            </dialog>
-            <section style={{
-                        textAlign: "center"
-                    }}>
-                <form className="form--login" onSubmit={handleLogin}>
-                    <h1>Cross Check</h1>
-                    <h2>Please sign in</h2>
-                    <fieldset style={{
-                        textAlign: "center"
-                    }}>
-                        <div>
-                            <input ref={email} type="email" id="email" className="form-control" 
-                                placeholder="Email address" required autoFocus />
-                        </div>
-                        <div>
-                            <input ref={password} type="password" id="password" className="form-control" 
-                                placeholder="Password" required />
-                        </div>
-                        <div>
-                            <button className="btn btn-1 btn-sep icon-send" type="submit">Sign In</button>
-                        </div>
-                    </fieldset>
-                </form>
-            </section>
-            <section className="link--register" style={{
-                        textAlign: "center"
-                    }}>
-                <Link to="/register">Not a member yet?</Link>
-            </section>
-        </main>
+        <div>
+    <Dialog open={true} aria-labelledby="form-dialog-title" disableBackdropClick disableEscapeKeyDown>
+        <DialogTitle id="form-dialog-title">Please sign in:</DialogTitle>
+        <DialogContent>
+        <TextField
+            margin="dense"
+            label="Email"
+            type="email"
+            name="email"
+            fullWidth
+            onChange={handleControlledInputChange}
+        />
+        <TextField
+            margin="dense"
+            label="Password"
+            type="password"
+            name="password"
+            fullWidth
+            onChange={handleControlledInputChange}
+        />
+        </DialogContent>
+        <DialogActions style={{justifyContent: "center"}}>
+        <Button type="submit" onClick={evt => {
+                    evt.preventDefault()
+                    handleLogin(evt)
+                }} color="primary">
+                Login
+        </Button>
+        </DialogActions>
+        <div className="register--link"><Link to="/register">Not a member yet?</Link></div>
+        
+    </Dialog>
+    </div>
+     
     )
 }
