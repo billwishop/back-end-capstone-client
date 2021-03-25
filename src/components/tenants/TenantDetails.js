@@ -40,7 +40,7 @@ export const TenantDetails = (props) => {
             key: 'selection'
         }
     ]);
-    const {paymentByTenant, payments, paymentTypes, getPaymentTypes, updatePayment, 
+    const {paymentByTenant, payments, paymentTypes, getPaymentTypes, updateTenantPayment, 
         deletePayment, getTableTenants, getPaymentsByTenant, postPaymentTenantDetails} = useContext(PaymentContext)
     
     // Fetches and sets paymentByTenant, associated tenants 
@@ -204,7 +204,7 @@ export const TenantDetails = (props) => {
                         deletePayment(payment.payment_id),
                         
                         onRowUpdate: payment => 
-                        updatePayment(payment)
+                        updateTenantPayment(payment)
                     }}
                     onSearchChange={(e) => {
                         setTotal(PaymentSearch(paymentByTenant, e))
