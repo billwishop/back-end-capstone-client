@@ -6,18 +6,17 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import {faBars} from '@fortawesome/free-solid-svg-icons' 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList'
 
 export const NavBar = props => {
     const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+const handleClick = (event) => {
+setAnchorEl(event.currentTarget);
+};
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+const handleClose = () => {
+setAnchorEl(null);
+};
     return (
         <>
             <FontAwesomeIcon className='icon menuIcon fa-2x' icon={faBars}

@@ -1,6 +1,5 @@
-import React, {useContext, useState, useEffect, useRef} from 'react'
+import React, {useContext, useState} from 'react'
 import {TenantContext} from './TenantProvider'
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -12,10 +11,6 @@ import Button from '@material-ui/core/Button';
 export const TenantDeleteModal = props => {
     const {singleTenant, deleteTenant} = useContext(TenantContext)
     const [open, setOpen] = useState(true);
-
-const handleClickOpen = () => {
-setOpen(true);
-};
 
 const handleClose = () => {
 setOpen(false);

@@ -1,9 +1,7 @@
-import React, {useContext, useState} from 'react'
+import React, {useState} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 import DeleteIcon from '@material-ui/icons/Delete';
-import {PropertyContext} from './PropertyProvider'
 import { yearLast } from '../utility/Date'
-import EditIcon from '@material-ui/icons/Edit';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
@@ -14,7 +12,6 @@ import { Divider } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 export const Lease = ({lease, propertyId}) => {
-    const {deleteLease} = useContext(PropertyContext)
     const [expanded, setExpanded] = useState(false);
 
     const history = useHistory()

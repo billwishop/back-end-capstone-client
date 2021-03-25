@@ -14,7 +14,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 
 export const Tenant = ({ tenant }) => {
-    const {getSingleTenant, deleteTenant} = useContext(TenantContext)
+    const {getSingleTenant} = useContext(TenantContext)
     const [expanded, setExpanded] = useState(false);
 
     // state variable to hold active lease to display current address

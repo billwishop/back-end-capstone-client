@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState, forwardRef} from 'react'
+import React, {useContext, useEffect} from 'react'
 import {PropertyContext} from './PropertyProvider.js'
 import AddBox from '@material-ui/icons/AddBox';
 import {Property} from './Property.js'

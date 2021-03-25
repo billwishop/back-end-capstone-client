@@ -40,8 +40,8 @@ export const TenantDetails = (props) => {
             key: 'selection'
         }
     ]);
-    const {paymentByTenant, payments, paymentTypes, getPaymentTypes, getPayments, postPayment, updatePayment, 
-        deletePayment, getTableTenants, tableTenants, getPaymentsByTenant, postPaymentTenantDetails} = useContext(PaymentContext)
+    const {paymentByTenant, payments, paymentTypes, getPaymentTypes, updatePayment, 
+        deletePayment, getTableTenants, getPaymentsByTenant, postPaymentTenantDetails} = useContext(PaymentContext)
     
     // Fetches and sets paymentByTenant, associated tenants 
     // and payment types on initial render

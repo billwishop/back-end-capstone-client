@@ -1,6 +1,5 @@
 import React from 'react'
 import {useState} from 'react'
-import {formatDate} from '../utility/Date'
 
 export const PaymentContext = React.createContext()
 
@@ -19,10 +18,6 @@ export const PaymentProvider = props => {
             }
         })
         .then(r => r.json())
-        // .then(r=> {
-        //     setEndDate(new Date(r[0].date))
-        //     setStartDate(new Date(r[r.length - 1].date))
-        //     return r})
         .then(setPayments)
     }
 
@@ -59,7 +54,7 @@ export const PaymentProvider = props => {
     }
 
     const postPaymentTenantDetails = (payment, tenantId ) => {
-        payment['tenant_id'] = tenantId
+        payment['full_name'] = tenantId
         return fetch("http://localhost:8000/payments", {
             method: "POST",
             headers: {
