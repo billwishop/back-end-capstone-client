@@ -16,7 +16,7 @@ import Input from '@material-ui/core/Input';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 export const LeaseForm = props => {
-    const {getSingleProperty, singleProperty, postLease} = useContext(PropertyContext)
+    const {getSingleProperty, postLease} = useContext(PropertyContext)
     const {tenants, getTenants} = useContext(TenantContext)
 
     // State variable to control when the modal will appear
@@ -133,7 +133,7 @@ export const LeaseForm = props => {
         </Button>
         <Button type="submit" onClick={evt => {
                     evt.preventDefault()
-                    if (lease.tenant != "" && lease.rent != ""){
+                    if (lease.tenant !== "" && lease.rent !== ""){
                     constructLease()
                     props.history.push(`/properties/${props.match.params.property_id}`)}
                     else {

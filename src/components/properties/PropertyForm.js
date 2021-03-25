@@ -1,10 +1,9 @@
-import React, {useContext, useState, useEffect, useRef} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import {PropertyContext} from './PropertyProvider'
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
@@ -14,10 +13,6 @@ export const PropertyForm = props => {
     
     // State variable to control when the modal will appear
     const [open, setOpen] = useState(true);
-
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
 
     const handleClose = () => {
         setOpen(false);
@@ -29,11 +24,6 @@ export const PropertyForm = props => {
         state:"",
         postal_code:""
     })
-
-    const street = useRef()
-    const city = useRef()
-    const state = useRef()
-    const postal_code = useRef()
     
     const editMode = props.match.params.hasOwnProperty("property_id")
 
@@ -86,7 +76,6 @@ export const PropertyForm = props => {
             label="Street"
             type="text"
             name="street"
-            ref={street}
             fullWidth
             defaultValue={editMode ?singleProperty.street : ""}
             onChange={handleControlledInputChange}
@@ -96,7 +85,6 @@ export const PropertyForm = props => {
             label="City"
             type="text"
             name="city"
-            ref={city}
             fullWidth
             defaultValue={editMode ?singleProperty.city :""}
             onChange={handleControlledInputChange}
@@ -106,7 +94,6 @@ export const PropertyForm = props => {
             label="State"
             type="state"
             name="state"
-            ref={state}
             fullWidth
             defaultValue={editMode ?singleProperty.state :""}
             onChange={handleControlledInputChange}
@@ -116,7 +103,6 @@ export const PropertyForm = props => {
             label="Postal Code"
             type="postal_code"
             name="postal_code"
-            ref={postal_code}
             fullWidth
             defaultValue={editMode ?singleProperty.postal_code :""}
             onChange={handleControlledInputChange}
