@@ -78,6 +78,19 @@ export const PaymentProvider = props => {
         .then(getPayments)
     }
 
+    const updateTenantPayment = payment => {
+        payment['full_name'] = payment.tenant_id
+        return fetch(`http://localhost:8000/payments/${payment.payment_id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${localStorage.getItem("cc_token")}`
+            },
+            body: JSON.stringify(payment)
+        })
+        .then(getPayments)
+    }
+
     const deletePayment = id => {
         return fetch(`http://localhost:8000/payments/${id}`, {
             method: "DELETE",
@@ -143,7 +156,7 @@ export const PaymentProvider = props => {
                                             postPayment, updatePayment, deletePayment,
                                             paymentTypes, getPaymentTypes, getTableTenants, 
                                             tableTenants, getPaymentsByTenant, 
-                                            postPaymentTenantDetails
+                                            postPaymentTenantDetails, updateTenantPayment
                                             }}>
             {props.children}
         </PaymentContext.Provider>

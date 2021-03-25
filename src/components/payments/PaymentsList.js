@@ -211,6 +211,7 @@ export const PaymentList = () => {
                         updatePayment(payment)
                     }}
                     onSearchChange={e => {
+                        setFilteredPayments(null)
                         setTotal(PaymentSearch(payments, e))                 
                     }}
                     />
